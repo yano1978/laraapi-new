@@ -40,7 +40,19 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [];
+        $message = 'L\'utente è stato creato correttamente';
+        try {
+            $User = new User();
+            $postData = $request->except('id', '_method');
+            $data['password'] = Hash::make('password');
+            $User->fill($postData);
+            $success = $User->save();
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            $success = false;
+        }
+        return compact('data', 'message', 'success');
     }
 
     /**
