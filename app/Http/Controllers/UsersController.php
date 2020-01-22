@@ -141,6 +141,17 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = [];
+        $message = 'L\'utente è stato eliminato correttamente';
+        try {
+            $User = User::findOrFail($id);
+            $data = $User;
+            $success = $User->delete();
+
+        } catch (\Exception $e) {
+            $message = 'L\'utente non è stato trovato';
+            $success = false;
+        }
+        return compact('data', 'message', 'success');
     }
 }
