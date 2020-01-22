@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -50,20 +51,27 @@ class UsersController extends Controller
      */
     public function show($id)
     {
+        $data = [];
+        $message = 'Dettagli dati utente';
         try {
             // return response()->json([
             //     'data' => User::findOrFail($id),
             //     'success' => true
             // ]);
-            return response()->json(['data' => User::findOrFail($id)]);
+           $data = User::findOrFail($id);
+           $success = true;
 
         } catch (\Exception $e) {
-            return response()->json([
-                'data' => [],
-                'message' => $e->getMessage(),
-                'success' => false
-            ]);
+            // return response()->json([
+            //     'data' => [],
+            //     'message' => $e->getMessage(),
+            //     'success' => false
+            // ]);
+            $success = false;
+            $message = $e->getMessage();
         }
+
+        return compact('data', 'message', 'success');
     }
 
     /**
@@ -86,7 +94,31 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = [];
+        $message = 'L\'utente è stato modificato correttamente';
+        try {
+
+            // return response()->json(
+            //     ['data' => User::findOrFail($id),
+
+            //     ]);
+            $User = User::findOrFail($id);
+            $success = true;
+            $postData = $request->except('id', '_method');
+            $data['password'] = Hash::make('password');
+            $success = $User->update($postData);
+            $data = $User;
+
+        } catch (\Exception $e) {
+            // return response()->json([
+            //     'data' => [],
+            //     'message' => $e->getMessage(),
+            //     'success' => false
+            // ]);
+            $message = $e->getMessage();
+            $success = false;
+        }
+        return compact('data', 'message', 'success');
     }
 
     /**
