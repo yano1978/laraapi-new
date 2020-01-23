@@ -45,7 +45,7 @@ class UsersController extends Controller
         try {
             $User = new User();
             $postData = $request->except('id', '_method');
-            $data['password'] = Hash::make('password');
+            $postData['password'] = Hash::make('password');
             $User->fill($postData);
             $success = $User->save();
         } catch (\Exception $e) {
@@ -117,7 +117,8 @@ class UsersController extends Controller
             $User = User::findOrFail($id);
             $success = true;
             $postData = $request->except('id', '_method');
-            $data['password'] = Hash::make('password');
+            if(empty($postData['password']));
+            $postData['password'] = Hash::make('password');
             $success = $User->update($postData);
             $data = $User;
 
