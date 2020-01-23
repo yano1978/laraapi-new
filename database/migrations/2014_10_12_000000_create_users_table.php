@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
 
         // Optionals columns
             $table->string('lastname', 32)->nullable();
-            $table->string('phone', 16)->nullable();
+            $table->string('phone', 32)->nullable();
             $table->string('province', 32)->nullable();
             $table->smallInteger('age', false, true)->nullable();
             $table->string('fiscalcode', 32)->nullable();
